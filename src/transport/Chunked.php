@@ -12,7 +12,7 @@ class Chunked implements ITransport
      */
     public function load($from, \marvin255\fias\file\IFile $file)
     {
-        $chunksize = 10 * 1024 * 1024;
+        $chunksize = 8192;
 
         $arUrl = parse_url($from);
 
@@ -22,7 +22,7 @@ class Chunked implements ITransport
             empty($arUrl['port']) ? 80 : $arUrl['port'],
             $errstr,
             $errcode,
-            5
+            50
         );
         if ($hRemote === false) {
             throw new Exception("Can't open socket to remote {$errstr}($errcode)");
@@ -52,6 +52,8 @@ class Chunked implements ITransport
         } elseif (!isset($headers['Content-Length']) || intval($headers['Content-Length']) === 0) {
             throw new Exception("Socket returns an empty Content-Length header");
         }
+
+        $start = microtime(true);
 
         $cnt = 0;
         while (!feof($hRemote)) {
