@@ -22,6 +22,13 @@ interface IFile
     public function getPath();
 
     /**
+     * Возвращает путь до папки с файлом.
+     *
+     * @return string
+     */
+    public function getDirname();
+
+    /**
      * Удаляет файл.
      *
      * @return \marvin255\fias\file\File

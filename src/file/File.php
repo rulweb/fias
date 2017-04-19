@@ -42,6 +42,15 @@ class File implements IFile
     /**
      * @inheritdoc
      */
+    public function getDirname()
+    {
+        $path = $this->getPath();
+        return pathinfo($path, PATHINFO_DIRNAME);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function delete()
     {
         if (!unlink($this->getPath())) {
