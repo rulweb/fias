@@ -1,6 +1,4 @@
 index.php
 vendor
 composer.lock
-phpunit.xml
-metrics.html
 .php_cs.cache
