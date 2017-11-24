@@ -7,5 +7,4 @@ namespace marvin255\fias\transport;
  */
 class Exception extends \marvin255\fias\Exception
 {
-
 }

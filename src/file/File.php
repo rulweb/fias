@@ -45,6 +45,7 @@ class File implements IFile
     public function getDirname()
     {
         $path = $this->getPath();
+
         return pathinfo($path, PATHINFO_DIRNAME);
     }
 

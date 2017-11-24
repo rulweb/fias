@@ -7,5 +7,4 @@ namespace marvin255\fias\file;
  */
 class Exception extends \marvin255\fias\Exception
 {
-
 }

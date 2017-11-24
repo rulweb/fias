@@ -7,5 +7,4 @@ namespace marvin255\fias;
  */
 class Exception extends \Exception
 {
-
 }

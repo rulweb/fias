@@ -5,7 +5,7 @@
     "keywords": ["php", "fias"],
     "license": "MIT",
     "require": {
-        "php": ">=5.6.0"
+        "php": ">=5.5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*",

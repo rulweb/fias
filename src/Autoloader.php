@@ -20,6 +20,7 @@ class Autoloader
     public static function register($path = null)
     {
         self::$path = $path ? $path : dirname(__FILE__);
+
         return spl_autoload_register([__CLASS__, 'load'], true, true);
     }
 
@@ -28,13 +29,13 @@ class Autoloader
      */
     public static function load($class)
     {
-        $prefix = __NAMESPACE__.'\\';
+        $prefix = __NAMESPACE__ . '\\';
         $len = strlen($prefix);
         if (strncmp($prefix, $class, $len) !== 0) {
             return;
         }
         $relativeClass = substr($class, $len);
-        $file = self::$path.'/'.str_replace('\\', '/', $relativeClass).'.php';
+        $file = self::$path . '/' . str_replace('\\', '/', $relativeClass) . '.php';
         if (file_exists($file)) {
             require $file;
         }
