@@ -15,7 +15,7 @@ interface FlowInterface
      * очереди.
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return \marvin255\fias\pipe\FlowInterface
      */
