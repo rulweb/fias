@@ -16,7 +16,7 @@
     "autoload": {
         "psr-4": {
             "marvin255\\fias\\": "src/",
-            "marvin255\\fias\\tests\\": "tests/"
+            "marvin255\\fias\\tests\\": "tests/src"
         }
     },
     "repositories": [
