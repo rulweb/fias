@@ -1,20 +1,22 @@
 <?php
 
-namespace marvin255\fias\transport;
+namespace marvin255\fias\utils\transport;
+
+use marvin255\fias\utils\filesystem\FileInterface;
 
 /**
  * Загрузка файла с помощью curl.
  */
-class Curl implements ITransport
+class Curl implements TransportInterface
 {
     /**
      * @inheritdoc
      */
-    public function load($from, \marvin255\fias\file\IFile $file)
+    public function load($from, FileInterface $file)
     {
-        $hLocal = fopen($file->getPath(), 'wb');
+        $hLocal = fopen($file->getPathname(), 'wb');
         if ($hLocal === false) {
-            throw new Exception("Can't open local file for writing");
+            throw new Exception("Can't open local file for writing: " . $file->getPath());
         }
 
         $ch = curl_init($from);
