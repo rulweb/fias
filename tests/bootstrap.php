@@ -2,7 +2,7 @@
 
 $composerAutoloaderPath = dirname(__DIR__) . '/vendor/autoload.php';
 if (file_exists($composerAutoloaderPath)) {
-    require $composerAutoloaderPath;
+    require_once $composerAutoloaderPath;
 } else {
-    require dirname(__DIR__) . '/lib/Autoloader.php';
+    require_once dirname(__DIR__) . '/lib/Autoloader.php';
 }
