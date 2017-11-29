@@ -7,7 +7,7 @@ use marvin255\fias\utils\filesystem\DirectoryInterface;
 use marvin255\fias\utils\transport\TransportInterface;
 
 /**
- * Задача, которая по ссылке на локальный диск.
+ * Задача, которая загружает файл по ссылке на локальный диск.
  */
 class Download implements JobInterface
 {
@@ -26,7 +26,7 @@ class Download implements JobInterface
 
     /**
      * Конструктор.
-     * Задает рабочий каталог, в который будет скопирован файл и объект,
+     * Задает рабочий каталог, в который будет скопирован файл, и объект,
      * который будет непосредственно загружать файл.
      *
      * @param \marvin255\fias\utils\filesystem\DirectoryInterface $workDir

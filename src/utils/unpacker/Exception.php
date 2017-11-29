@@ -1,6 +1,6 @@
 <?php
 
-namespace marvin255\fias\archiver;
+namespace marvin255\fias\utils\unpacker;
 
 /**
  * Исключение, связанное с распаковкой файлов.
