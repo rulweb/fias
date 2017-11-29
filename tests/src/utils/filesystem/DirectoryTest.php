@@ -79,7 +79,12 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
     {
         $folder = new \marvin255\fias\utils\filesystem\Directory($this->folderPath);
         $folder->create();
-        file_put_contents($this->folderPath . '/test.tmp', mt_rand());
+
+        file_put_contents($this->folderPath . '/test_' . mt_rand() . '.tmp', mt_rand());
+        $subfolder = $this->folderPath . '/sub_folder_' . mt_rand();
+        mkdir($subfolder);
+        file_put_contents($subfolder . '/test_' . mt_rand() . '.tmp', mt_rand());
+
         $this->assertSame(
             true,
             $folder->isExists()
@@ -91,6 +96,10 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             false,
             $folder->isExists()
+        );
+        $this->assertSame(
+            false,
+            is_dir($this->folderPath)
         );
     }
 
@@ -109,6 +118,97 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(
             true,
             $folder->isExists()
+        );
+    }
+
+    public function testCreateChildDirectory()
+    {
+        $folder = new \marvin255\fias\utils\filesystem\Directory($this->folderPath);
+        $childName = 'child_folder_' . mt_rand();
+        $child = $folder->createChildDirectory($childName);
+
+        $this->assertInstanceOf(
+            \marvin255\fias\utils\filesystem\DirectoryInterface::class,
+            $child
+        );
+        $this->assertSame(
+            $childName,
+            $child->getFoldername()
+        );
+        $this->assertSame(
+            $this->folderPath . '/' . $childName,
+            $child->getPathname()
+        );
+    }
+
+    public function testCreateChildDirectoryWrongNameException()
+    {
+        $name = '/~folder_' . mt_rand();
+        $folder = new \marvin255\fias\utils\filesystem\Directory($this->folderPath);
+        $this->setExpectedException('\InvalidArgumentException', $name);
+        $folder->createChildDirectory($name);
+    }
+
+    public function testCreateChildFile()
+    {
+        $folder = new \marvin255\fias\utils\filesystem\Directory($this->folderPath);
+        $folder->create();
+        $childName = 'child_file_' . mt_rand() . '.tmp';
+        $child = $folder->createChildFile($childName);
+
+        $this->assertInstanceOf(
+            \marvin255\fias\utils\filesystem\FileInterface::class,
+            $child
+        );
+        $this->assertSame(
+            $childName,
+            $child->getBasename()
+        );
+        $this->assertSame(
+            $this->folderPath . '/' . $childName,
+            $child->getPathname()
+        );
+        $this->assertSame(
+            'tmp',
+            $child->getExtension()
+        );
+    }
+
+    public function testCreateChildFileWrongNameException()
+    {
+        $name = '/~file_' . mt_rand();
+        $folder = new \marvin255\fias\utils\filesystem\Directory($this->folderPath);
+        $this->setExpectedException('\InvalidArgumentException', $name);
+        $folder->createChildFile($name);
+    }
+
+    public function testIterator()
+    {
+        $folder = new \marvin255\fias\utils\filesystem\Directory($this->folderPath);
+        $folder->create();
+
+        $children = [
+            $this->folderPath . '/file_0_' . mt_rand() . '.tmp',
+            $this->folderPath . '/file_1_' . mt_rand() . '.tmp',
+            $this->folderPath . '/sub_folder_2_' . mt_rand(),
+            $this->folderPath . '/sub_folder_3_' . mt_rand(),
+        ];
+        file_put_contents($children[0], mt_rand());
+        file_put_contents($children[1], mt_rand());
+        mkdir($children[2]);
+        mkdir($children[3]);
+
+        $forTest = [];
+        foreach ($folder as $key => $child) {
+            $forTest[] = $child->getPathname();
+        }
+
+        sort($children);
+        sort($forTest);
+
+        $this->assertSame(
+            $forTest,
+            $children
         );
     }
 

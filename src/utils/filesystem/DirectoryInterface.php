@@ -71,7 +71,7 @@ interface DirectoryInterface extends Iterator
      *
      * @return \marvin255\fias\utils\filesystem\DirectoryInterface
      */
-    public function createChildFolder($name);
+    public function createChildDirectory($name);
 
     /**
      * Создает вложенный файл.

@@ -2,6 +2,7 @@
 
 namespace marvin255\fias\utils\filesystem;
 
+use CallbackFilterIterator;
 use DirectoryIterator;
 use RuntimeException;
 use InvalidArgumentException;
@@ -143,15 +144,19 @@ class Directory implements DirectoryInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function createChildFolder($name)
+    public function createChildDirectory($name)
     {
         if (!preg_match('/^[a-z]+[a-z0-9_]*$/', $name)) {
             throw new InvalidArgumentException("Wrong folder name {$name}");
         }
 
-        $class = $this->folderClass;
+        $class = $this->directoryClass;
 
-        return new $class($this->absolutePath . '/' . $name);
+        return new $class(
+            $this->absolutePath . '/' . $name,
+            $this->fileClass,
+            $this->directoryClass
+        );
     }
 
     /**
@@ -178,17 +183,10 @@ class Directory implements DirectoryInterface
         $return = null;
         if ($iterator = $this->getIterator()) {
             $item = $iterator->current();
-            while ($item && $item->isDot()) {
-                $iterator->next();
-                $item = $iterator->current();
-            }
-            if ($item) {
-                if ($item->isDir()) {
-                    var_dump($item);
-                    $return = $this->createChildFolder($item->getFilename());
-                } elseif ($item->isFile()) {
-                    $return = $this->createChildFile($item->getFilename());
-                }
+            if ($item->isDir()) {
+                $return = $this->createChildDirectory($item->getFilename());
+            } elseif ($item->isFile()) {
+                $return = $this->createChildFile($item->getFilename());
             }
         }
 
@@ -246,7 +244,13 @@ class Directory implements DirectoryInterface
     protected function getIterator()
     {
         if ($this->iterator === null && $this->isExists()) {
-            $this->iterator = new DirectoryIterator($this->getPathname());
+            $dirIterator = new DirectoryIterator($this->getPathname());
+            $this->iterator = new CallbackFilterIterator(
+                $dirIterator,
+                function ($current, $key, $iterator) {
+                    return !$iterator->isDot();
+                }
+            );
         }
 
         return $this->iterator;
