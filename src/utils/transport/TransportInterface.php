@@ -1,8 +1,6 @@
 <?php
 
-namespace marvin255\fias\transport;
-
-use marvin255\fias\utils\filesystem\FileInterface;
+namespace marvin255\fias\utils\transport;
 
 /**
  * Интерфес для объекта, который загружает файл с удаленного url.
@@ -10,10 +8,13 @@ use marvin255\fias\utils\filesystem\FileInterface;
 interface TransportInterface
 {
     /**
-     * Загружает файл по указанной в первом параметре ссылке на локальный диск в файл, указанный во втором параметре.
+     * Загружает файл по указанной в первом параметре ссылке на локальный диск
+     * в файл, указанный во втором параметре.
      *
-     * @param string                                         $from
-     * @param \marvin255\fias\utils\filesystem\FileInterface $file
+     * @param string $from
+     * @param string $to
+     *
+     * @return \marvin255\fias\utils\transport\TransportInterface
      */
-    public function load($from, FileInterface $file);
+    public function download($from, $to);
 }

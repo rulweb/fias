@@ -94,7 +94,9 @@ class Directory implements DirectoryInterface
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
+     *
+     * @throws \RuntimeException
      */
     public function delete()
     {
