@@ -25,12 +25,9 @@ class UnpackArchiveTest extends \PHPUnit_Framework_TestCase
         $flow->method('get')
             ->with($this->equalTo('downloaded_file'))
             ->will($this->returnValue($file));
-        $flow->expects($this->at(1))
+        $flow->expects($this->once())
             ->method('set')
             ->with($this->equalTo('downloaded_file'), $this->equalTo(null));
-        $flow->expects($this->at(2))
-            ->method('set')
-            ->with($this->equalTo('unpacked_directory'), $this->equalTo($dir));
 
         $unpacker = $this->getMockBuilder('\marvin255\fias\utils\unpacker\UnpackerInterface')
             ->getMock();

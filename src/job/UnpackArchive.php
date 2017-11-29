@@ -66,7 +66,6 @@ class UnpackArchive implements JobInterface
             );
             $archive->delete();
             $flow->set('downloaded_file', null);
-            $flow->set('unpacked_directory', $this->workDir);
             $return = true;
         } catch (\marvin255\fias\utils\unpacker\Exception $e) {
             $archive->delete();
