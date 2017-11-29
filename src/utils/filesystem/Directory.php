@@ -48,7 +48,7 @@ class Directory implements DirectoryInterface
             throw new InvalidArgumentException("absolutePath parameter can't be empty");
         }
         if (!preg_match('/^\/[a-z_]+.*[^\/]+$/', $absolutePath)) {
-            throw new InvalidArgumentException("absolutePath must starts from root, and consist of digits and letters");
+            throw new InvalidArgumentException('absolutePath must starts from root, and consist of digits and letters');
         }
         if (!is_subclass_of($fileClass, FileInterface::class)) {
             throw new InvalidArgumentException("{$fileClass} must be a FileInterface instance");

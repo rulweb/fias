@@ -229,8 +229,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
                 $it,
                 \RecursiveIteratorIterator::CHILD_FIRST
             );
-            foreach($files as $file) {
-                if ($file->isDir()){
+            foreach ($files as $file) {
+                if ($file->isDir()) {
                     rmdir($file->getRealPath());
                 } elseif ($file->isFile()) {
                     unlink($file->getRealPath());
