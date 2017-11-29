@@ -10,7 +10,7 @@ use RarArchive;
 class Rar implements UnpackerInterface
 {
     /**
-     * {@inhertidoc}
+     * {@inhertidoc}.
      *
      * @throws \marvin255\fias\utils\unpacker\Exception
      */
