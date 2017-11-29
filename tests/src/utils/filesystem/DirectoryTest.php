@@ -215,7 +215,8 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->folderName = 'temp_' . mt_rand();
-        $this->folderPath = sys_get_temp_dir() . '/sub_folder_' . mt_rand() . '/' . $this->folderName;
+        $this->rootPath = sys_get_temp_dir() . '/test_sub_folder_' . mt_rand();
+        $this->folderPath = $this->rootPath . '/' . $this->folderName;
     }
 
     public function tearDown()
@@ -237,6 +238,9 @@ class DirectoryTest extends \PHPUnit_Framework_TestCase
                 }
             }
             rmdir($this->folderPath);
+        }
+        if (is_dir($this->rootPath)) {
+            rmdir($this->rootPath);
         }
     }
 }
