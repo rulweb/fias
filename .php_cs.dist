@@ -11,7 +11,7 @@ $rules = [
 ];
 
 if (class_exists('\\PhpCsFixer\\Fixer\\ControlStructure\\YodaStyleFixer')) {
-    $rules['use_yoda_style'] = false;
+    $rules['yoda_style'] = false;
 }
 
 return PhpCsFixer\Config::create()->setRules($rules)->setFinder($finder);
