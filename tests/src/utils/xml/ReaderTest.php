@@ -80,7 +80,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testNotOpenException()
     {
-        $this->setExpectedException('\marvin255\fias\utils\xml\Exception');
+        $this->setExpectedException('\marvin255\fias\reader\Exception');
         $reader = new Reader('/root/test', [
             'testKey' => 'testValue',
         ]);
@@ -90,7 +90,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
     public function testEmptyFileException()
     {
         $file = 'file_' . mt_rand();
-        $this->setExpectedException('\marvin255\fias\utils\xml\Exception', $file);
+        $this->setExpectedException('\InvalidArgumentException', $file);
         $reader = new Reader('/root/test', [
             'testKey' => 'testValue',
         ]);
@@ -99,7 +99,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testEmptyPathToNodeException()
     {
-        $this->setExpectedException('\marvin255\fias\utils\xml\Exception');
+        $this->setExpectedException('\InvalidArgumentException');
         $reader = new Reader(null, [
             'testKey' => 'testValue',
         ]);
@@ -107,7 +107,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
     public function testEmptySelectException()
     {
-        $this->setExpectedException('\marvin255\fias\utils\xml\Exception');
+        $this->setExpectedException('\InvalidArgumentException');
         $reader = new Reader('/root/test', []);
     }
 

@@ -2,9 +2,12 @@
 
 namespace marvin255\fias\utils\xml;
 
+use marvin255\fias\reader\ReaderInterface;
+use marvin255\fias\reader\Exception;
 use XMLReader;
 use DOMDocument;
 use SimpleXMLElement;
+use InvalidArgumentException;
 
 /**
  * Читает данные из файла в формате xml.
@@ -56,17 +59,17 @@ class Reader implements ReaderInterface
      * @param string $pathToNode Путь до узла, который нужно прочитать
      * @param array  $select     Массив параметров, который нужно выбрать из узла
      *
-     * @throws \marvin255\fias\utils\xml\Exception
+     * @throws \InvalidArgumentException
      */
     public function __construct($pathToNode, array $select)
     {
         if (empty($pathToNode)) {
-            throw new Exception('Empty path to node');
+            throw new InvalidArgumentException('Empty path to node');
         }
         $this->pathToNode = $pathToNode;
 
         if (empty($select)) {
-            throw new Exception('Nothing to select');
+            throw new InvalidArgumentException('Nothing to select');
         }
         $this->select = $select;
     }
@@ -128,7 +131,7 @@ class Reader implements ReaderInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \marvin255\fias\utils\xml\Exception
+     * @throws \InvalidArgumentException
      */
     public function open($source)
     {
@@ -136,7 +139,7 @@ class Reader implements ReaderInterface
 
         $realpath = realpath(trim($source));
         if (!$realpath || !file_exists($realpath) || !is_file($realpath) || !is_readable($realpath)) {
-            throw new Exception("Can\'t read file: $source");
+            throw new InvalidArgumentException("Can\'t read file: $source");
         }
         $this->pathToFile = $realpath;
 
@@ -219,7 +222,7 @@ class Reader implements ReaderInterface
      *
      * @return \XMLReader
      *
-     * @throws \marvin255\fias\utils\xml\Exception
+     * @throws \marvin255\fias\reader\Exception
      */
     protected function getReader()
     {
