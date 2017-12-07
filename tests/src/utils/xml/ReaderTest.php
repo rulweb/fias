@@ -209,7 +209,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
         for ($i = 0; $i < $arPathCount; ++$i) {
             $pathItem = $arPath[$i];
-            $fileContent .= "<{$pathItem}>\r\n";
+            $fileContent .= "<{$pathItem}>";
         }
 
         for ($item = 0; $item < $items; ++$item) {
@@ -225,7 +225,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
 
         for ($i = $arPathCount - 1; $i >= 0; --$i) {
             $pathItem = $arPath[$i];
-            $fileContent .= "</{$pathItem}>\r\n";
+            $fileContent .= "</{$pathItem}>";
         }
 
         file_put_contents($this->templateFile, $fileContent);
