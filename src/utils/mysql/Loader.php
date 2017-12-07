@@ -152,15 +152,16 @@ class Loader implements ProcessorInterface
      *
      * @param array $dataSet
      *
-     * @return array|null
+     * @return array|bool
      */
     protected function find(array $dataSet)
     {
         $where = $this->getWhereRows($dataSet);
         $sth = $this->getPrepared('select');
         $sth->execute($where);
+        $res = $sth->fetch(PDO::FETCH_ASSOC);
 
-        return $sth->fetchAll();
+        return $res ?: false;
     }
 
     /**
