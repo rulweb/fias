@@ -148,7 +148,7 @@ class Directory implements DirectoryInterface
      */
     public function createChildDirectory($name)
     {
-        if (!preg_match('/^[a-z]+[a-z0-9_]*$/', $name)) {
+        if (!preg_match('/^[a-z]+[a-z0-9_\-]*$/i', $name)) {
             throw new InvalidArgumentException("Wrong folder name {$name}");
         }
 
@@ -168,7 +168,7 @@ class Directory implements DirectoryInterface
      */
     public function createChildFile($name)
     {
-        if (!preg_match('/^[a-z]+[a-z0-9_\.]*$/', $name)) {
+        if (!preg_match('/^[a-z]+[a-z0-9_\.\-]*$/i', $name)) {
             throw new InvalidArgumentException("Wrong file name {$name}");
         }
 
