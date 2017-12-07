@@ -78,6 +78,34 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testIteratorSelfClosedFile()
+    {
+        $path = '/part_1_' . mt_rand() . '/part_2_' . mt_rand();
+        $key = 'key' . mt_rand();
+
+        $fileData = $this->fillFileWithSelfClosed(10, $path, $key);
+
+        $reader = new Reader($path, [
+            "attr{$key}" => "@attr{$key}",
+        ]);
+        $reader->open($this->templateFile);
+
+        $loadedData = [];
+        foreach ($reader as $key => $value) {
+            $loadedData[] = $value;
+        }
+
+        $loadedDataSecond = [];
+        foreach ($reader as $key => $value) {
+            $loadedDataSecond[] = $value;
+        }
+
+        $this->assertSame(
+            $fileData,
+            $loadedDataSecond
+        );
+    }
+
     public function testNotOpenException()
     {
         $this->setExpectedException('\marvin255\fias\reader\Exception');
@@ -161,6 +189,43 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
             if ($i !== 0) {
                 $fileContent .= "<{$pathItem}endpost><{$pathItem}endpostitem>endpost</{$pathItem}endpostitem></{$pathItem}endpost>\r\n";
             }
+        }
+
+        file_put_contents($this->templateFile, $fileContent);
+
+        return $return;
+    }
+
+    protected function fillFileWithSelfClosed($items, $path, $key)
+    {
+        $return = [];
+
+        $arPath = array_diff(explode('/', $path), ['', null]);
+        $itemString = array_pop($arPath);
+        $arPath = array_values($arPath);
+        $arPathCount = count($arPath);
+
+        $fileContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
+        for ($i = 0; $i < $arPathCount; ++$i) {
+            $pathItem = $arPath[$i];
+            $fileContent .= "<{$pathItem}>\r\n";
+        }
+
+        for ($item = 0; $item < $items; ++$item) {
+            $attr = "attr{$key}";
+            $attrValue = "attrvalue{$key}" . mt_rand();
+
+            $return[] = [
+                $attr => $attrValue,
+            ];
+
+            $fileContent .= "<{$itemString} {$attr}=\"{$attrValue}\" />";
+        }
+
+        for ($i = $arPathCount - 1; $i >= 0; --$i) {
+            $pathItem = $arPath[$i];
+            $fileContent .= "</{$pathItem}>\r\n";
         }
 
         file_put_contents($this->templateFile, $fileContent);
