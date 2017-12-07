@@ -174,10 +174,11 @@ class Reader implements ReaderInterface
             $arPath = explode('/', $this->pathToNode);
             $nameFilter = array_pop($arPath);
             $currentDepth = $reader->depth;
-
             //пропускаем все элементы, у которых неподходящее имя
             while ($reader->depth === $currentDepth && $nameFilter !== $reader->name) {
-                $reader->next();
+                if (!$reader->next()) {
+                    break;
+                }
             }
             //мы можем выйти из цикла, если найдем нужный элемент
             //или попадем на уровень выше - проверяем, что нашли нужный

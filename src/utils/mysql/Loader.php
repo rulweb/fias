@@ -157,8 +157,10 @@ class Loader implements ProcessorInterface
     protected function find(array $dataSet)
     {
         $where = $this->getWhereRows($dataSet);
+        $sth = $this->getPrepared('select');
+        $sth->execute($where);
 
-        return $this->getPrepared('select')->execute($where)->fetchAll();
+        return $sth->fetchAll();
     }
 
     /**
@@ -282,19 +284,19 @@ class Loader implements ProcessorInterface
         }
 
         //выборка элемента по идентификатору
-        $return['select'] = $dbh->prepare(
+        $return['select'] = $this->dbh->prepare(
             "SELECT {$select} FROM {$table} WHERE {$where}"
         );
         //обновление элемента
-        $return['update'] = $dbh->prepare(
+        $return['update'] = $this->dbh->prepare(
             "UPDATE {$table} SET {$set} WHERE {$where}"
         );
         //создание нового элемента
-        $return['insert'] = $dbh->prepare(
+        $return['insert'] = $this->dbh->prepare(
             "INSERT INTO {$table} ({$select}) VALUES ({$values})"
         );
         //создание сразу множества элементов
-        $return['bulk_insert'] = $dbh->prepare(
+        $return['bulk_insert'] = $this->dbh->prepare(
             "INSERT INTO {$table} ({$select}) VALUES (" . implode('), (', array_fill(0, $this->bulkCount, $values)) . ')'
         );
 
