@@ -205,7 +205,7 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
         $arPath = array_values($arPath);
         $arPathCount = count($arPath);
 
-        $fileContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+        $fileContent = '<?xml version="1.0" encoding="UTF-8"?>';
 
         for ($i = 0; $i < $arPathCount; ++$i) {
             $pathItem = $arPath[$i];

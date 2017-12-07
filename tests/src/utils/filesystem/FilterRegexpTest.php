@@ -17,12 +17,12 @@ class FilterRegexpTest extends \PHPUnit_Framework_TestCase
         $name = mt_rand() . '_findme_' . mt_rand() . '.XML';
         $file = $this->getMockBuilder('\marvin255\fias\utils\filesystem\FileInterface')
             ->getMock();
-        $file->method('getFilename')->will($this->returnValue($name));
+        $file->method('getBasename')->will($this->returnValue($name));
 
         $name1 = mt_rand() . '_dontfindme_' . mt_rand() . '.XML';
         $file1 = $this->getMockBuilder('\marvin255\fias\utils\filesystem\FileInterface')
             ->getMock();
-        $file1->method('getFilename')->will($this->returnValue($name1));
+        $file1->method('getBasename')->will($this->returnValue($name1));
 
         $filter = new FilterRegexp('.*_findme_.*\.xml');
 

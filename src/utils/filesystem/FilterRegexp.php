@@ -37,6 +37,6 @@ class FilterRegexp implements FilterInterface
      */
     public function check(FileInterface $file)
     {
-        return (bool) preg_match($this->regexp, $file->getFilename());
+        return (bool) preg_match($this->regexp, $file->getBasename());
     }
 }

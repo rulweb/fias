@@ -6,6 +6,24 @@ use marvin255\fias\job\ReadAndProcess;
 
 class ReadAndProcessTest extends \PHPUnit_Framework_TestCase
 {
+    public function testConstructWrongFilterException()
+    {
+        $dir = $this->getMockBuilder('\marvin255\fias\utils\filesystem\DirectoryInterface')
+            ->getMock();
+
+        $reader = $this->getMockBuilder('\marvin255\fias\reader\ReaderInterface')
+            ->getMock();
+
+        $processor = $this->getMockBuilder('\marvin255\fias\processor\ProcessorInterface')
+            ->getMock();
+
+        $filter = $this->getMockBuilder('\marvin255\fias\utils\filesystem\FilterInterface')
+            ->getMock();
+
+        $this->setExpectedException('\InvalidArgumentException', 1);
+        $job = new ReadAndProcess($dir, $reader, $processor, [$filter, false]);
+    }
+
     public function testRunUnexistedDirException()
     {
         $flow = $this->getMockBuilder('\marvin255\fias\pipe\FlowInterface')
@@ -90,6 +108,71 @@ class ReadAndProcessTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $job = new ReadAndProcess($dir, $reader, $processor);
+
+        $this->assertSame(
+            true,
+            $job->run($flow)
+        );
+    }
+
+    public function testRunWithFilter()
+    {
+        $file = $this->getMockBuilder('\marvin255\fias\utils\filesystem\FileInterface')
+            ->getMock();
+
+        $dir = $this->getMockBuilder('\marvin255\fias\utils\filesystem\DirectoryInterface')
+            ->getMock();
+        $dir->method('isExists')->will($this->returnValue(true));
+
+        $count = 0;
+        $dir->method('rewind')->will($this->returnCallback(function () use (&$count) {
+            $count = 0;
+        }));
+        $dir->method('next')->will($this->returnCallback(function () use (&$count) {
+            ++$count;
+        }));
+        $dir->method('valid')->will($this->returnCallback(function () use (&$count) {
+            return $count < 1;
+        }));
+        $dir->method('key')->will($this->returnCallback(function () use (&$count) {
+            return $count;
+        }));
+        $dir->method('current')->will($this->returnCallback(function () use (&$count, $file) {
+            return $count == 0 ? $file : null;
+        }));
+
+        $reader = $this->getMockBuilder('\marvin255\fias\reader\ReaderInterface')
+            ->getMock();
+        $reader->expects($this->never())->method('open');
+        $reader->expects($this->never())->method('close');
+
+        $processor = $this->getMockBuilder('\marvin255\fias\processor\ProcessorInterface')
+            ->getMock();
+        $processor->expects($this->never())->method('process');
+
+        $filter = $this->getMockBuilder('\marvin255\fias\utils\filesystem\FilterInterface')
+            ->getMock();
+        $filter->expects($this->once())
+            ->method('check')
+            ->with($this->equalTo($file))
+            ->will($this->returnValue(true));
+
+        $filter1 = $this->getMockBuilder('\marvin255\fias\utils\filesystem\FilterInterface')
+            ->getMock();
+        $filter1->expects($this->once())
+            ->method('check')
+            ->with($this->equalTo($file))
+            ->will($this->returnValue(false));
+
+        $flow = $this->getMockBuilder('\marvin255\fias\pipe\FlowInterface')
+            ->getMock();
+
+        $job = new ReadAndProcess(
+            $dir,
+            $reader,
+            $processor,
+            [$filter, $filter1]
+        );
 
         $this->assertSame(
             true,
