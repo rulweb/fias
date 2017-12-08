@@ -38,6 +38,8 @@ class Pipe implements PipeInterface
 
         foreach ($jobs as $job) {
             $return = $job->run($flow);
+            //собираем мусор после запуска каждой задачи
+            gc_collect_cycles();
             if (!$return) {
                 break;
             }
