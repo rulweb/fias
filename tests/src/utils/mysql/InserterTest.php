@@ -45,11 +45,11 @@ class InserterTest extends \marvin255\fias\tests\DbTestCase
     {
         $data = [];
         $bulkCount = 2;
-        for ($queryNumber = 0; $queryNumber < ($bulkCount * 2 + 1); ++$queryNumber) {
+        for ($queryNumber = 1; $queryNumber <= ($bulkCount * 2 + 1); ++$queryNumber) {
             $data[] = [
-                'id' => "data_{$queryNumber}_id_" . mt_rand(),
-                'row_1' => "data_{$queryNumber}_row_1_" . mt_rand(),
-                'row_2' => "data_{$queryNumber}_row_2_" . mt_rand(),
+                'id' => $queryNumber,
+                'row1' => "row_1_{$queryNumber}",
+                'row2' => "row_2_{$queryNumber}",
             ];
         }
         $pdo = $this->getPdo();
@@ -58,7 +58,7 @@ class InserterTest extends \marvin255\fias\tests\DbTestCase
             $pdo,
             'inserter',
             'id',
-            ['id', 'row_1', 'row_2'],
+            ['id', 'row1', 'row2'],
             $bulkCount
         );
 
@@ -72,44 +72,9 @@ class InserterTest extends \marvin255\fias\tests\DbTestCase
             'inserter',
             'SELECT * FROM inserter'
         );
-        $expectedTable = $this->createArrayDataSet(['inserter' => $data])
+        $expectedTable = $this->createFlatXmlDataSet(__DIR__ . '/_db/inserter_expected.xml')
             ->getTable('inserter');
-        $this->assertTablesEqual($expectedTable, $queryTable);
-    }
 
-    public function testProcessMultiplePrimary()
-    {
-        $data = [];
-        $bulkCount = 2;
-        for ($queryNumber = 0; $queryNumber < ($bulkCount * 2 + 1); ++$queryNumber) {
-            $data[] = [
-                'id' => "data_{$queryNumber}_id_" . mt_rand(),
-                'row_1' => "data_{$queryNumber}_row_1_" . mt_rand(),
-                'row_2' => "data_{$queryNumber}_row_2_" . mt_rand(),
-            ];
-        }
-        $pdo = $this->getPdo();
-
-        $inserter = new Inserter(
-            $pdo,
-            'inserter',
-            ['id', 'row_1'],
-            ['id', 'row_1', 'row_2'],
-            $bulkCount
-        );
-
-        $inserter->open();
-        foreach ($data as $item) {
-            $inserter->process($item);
-        }
-        $inserter->close();
-
-        $queryTable = $this->getConnection()->createQueryTable(
-            'inserter',
-            'SELECT * FROM inserter'
-        );
-        $expectedTable = $this->createArrayDataSet(['inserter' => $data])
-            ->getTable('inserter');
         $this->assertTablesEqual($expectedTable, $queryTable);
     }
 
@@ -120,14 +85,14 @@ class InserterTest extends \marvin255\fias\tests\DbTestCase
             $pdo,
             'inserter',
             'id',
-            ['id', 'row_1', 'row_2']
+            ['id', 'row1', 'row2']
         );
 
-        $this->setExpectedException('\marvin255\fias\processor\Exception', 'row_2');
+        $this->setExpectedException('\marvin255\fias\processor\Exception', 'row2');
         $inserter->open();
         $inserter->process([
             'id' => 'data_id_' . mt_rand(),
-            'row_1' => 'data_row_1_' . mt_rand(),
+            'row1' => 'data_row_1_' . mt_rand(),
         ]);
         $inserter->close();
     }
@@ -137,7 +102,7 @@ class InserterTest extends \marvin255\fias\tests\DbTestCase
      */
     public function getDataSet()
     {
-        return $this->createXMLDataSet(__DIR__ . '/_db/inserter.xml');
+        return $this->createFlatXmlDataSet(__DIR__ . '/_db/inserter.xml');
     }
 
     /**
@@ -147,8 +112,8 @@ class InserterTest extends \marvin255\fias\tests\DbTestCase
     {
         $this->getPdo()->exec('CREATE TABLE inserter (
             id int(11) not null,
-            row_1 varchar(30),
-            row_2 varchar(30),
+            row1 varchar(30),
+            row2 varchar(30),
             PRIMARY KEY(id)
         )');
 

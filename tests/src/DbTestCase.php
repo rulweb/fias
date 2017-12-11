@@ -36,14 +36,4 @@ abstract class DbTestCase extends \PHPUnit_Extensions_Database_TestCase
 
         return self::$pdo;
     }
-
-    /**
-     * @param array $data
-     *
-     * @return \MyApp_DbUnit_ArrayDataSet
-     */
-    protected function createArrayDataSet(array $data)
-    {
-        return new ArrayDataSet($data);
-    }
 }
