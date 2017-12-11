@@ -1,4 +1,9 @@
 vendor
 composer.lock
 .php_cs.cache
+
 tests/coverage
+
+examples/fias_data
+examples/vagrant/.vagrant
+examples/vagrant/*.log
