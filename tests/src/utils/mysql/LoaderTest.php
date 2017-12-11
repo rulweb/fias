@@ -66,11 +66,17 @@ class LoaderTest extends \marvin255\fias\tests\DbTestCase
             2
         );
 
-        $inserter->open();
+        $this->assertSame(
+            $inserter,
+            $inserter->open()
+        );
         foreach ($data as $item) {
             $inserter->process($item);
         }
-        $inserter->close();
+        $this->assertSame(
+            $inserter,
+            $inserter->close()
+        );
 
         $queryTable = $this->getConnection()->createQueryTable(
             'loader',

@@ -2,7 +2,6 @@
 
 namespace marvin255\fias\utils\mysql;
 
-use marvin255\fias\processor\Exception;
 use PDO;
 
 /**
@@ -64,28 +63,6 @@ class Loader extends Inserter
     }
 
     /**
-     * Возвращает поля из набора данных, которые соответствуют условию для поиска.
-     *
-     * @param array $dataSet
-     *
-     * @return array
-     *
-     * @throws \marvin255\fias\processor\Exception
-     */
-    protected function getWhereRows(array $dataSet)
-    {
-        $where = [];
-        foreach ($this->primary as $primary) {
-            if (!isset($dataSet[$primary])) {
-                throw new Exception("Can't find primary row {$primary} for dataset");
-            }
-            $where[] = $dataSet[$primary];
-        }
-
-        return $where;
-    }
-
-    /**
      * @inheritdoc
      */
     protected function createPrepared()
@@ -107,14 +84,17 @@ class Loader extends Inserter
         }
 
         //выборка элемента по идентификатору
-        $return['select'] = $this->dbh->prepare(
+        $statement = $this->dbh->prepare(
             "SELECT {$select} FROM {$table} WHERE {$where}"
         );
+        $this->setPrepared('select', $statement);
+
         //обновление элемента
-        $return['update'] = $this->dbh->prepare(
+        $statement = $this->dbh->prepare(
             "UPDATE {$table} SET {$set} WHERE {$where}"
         );
+        $this->setPrepared('update', $statement);
 
-        return $return;
+        return $this;
     }
 }
