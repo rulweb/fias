@@ -22,6 +22,7 @@ class Curl implements TransportInterface
         $ch = curl_init($from);
         curl_setopt($ch, CURLOPT_FILE, $hLocal);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
         $res = curl_exec($ch);
         $httpCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
