@@ -2,7 +2,7 @@
 
 namespace marvin255\fias\tests\job;
 
-class DownloadTest extends \PHPUnit_Framework_TestCase
+class DownloadTest extends \marvin255\fias\tests\BaseTestCase
 {
     public function testRun()
     {

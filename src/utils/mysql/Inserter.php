@@ -44,7 +44,7 @@ class Inserter implements ProcessorInterface
      *
      * @var int
      */
-    protected $bulkCount = 100;
+    protected $bulkCount = null;
 
     /**
      * Текущий буффер элементов для bulk insert.
@@ -62,14 +62,15 @@ class Inserter implements ProcessorInterface
     /**
      * Конструктор.
      *
-     * @param \PDO         $dbh     Объект pdo для подключения к бд
-     * @param string       $table   Название таблицы для загрузки
-     * @param array|string $primary Имя столбца или столбцов для поиска
-     * @param array        $rows    Массив имен столбцов, которые будут обновлены или загружены
+     * @param \PDO         $dbh       Объект pdo для подключения к бд
+     * @param string       $table     Название таблицы для загрузки
+     * @param array|string $primary   Имя столбца или столбцов для поиска
+     * @param array        $rows      Массив имен столбцов, которые будут обновлены или загружены
+     * @param int          $bulkCount Размер стека данных для bulk insert
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(PDO $dbh, $table, $primary, array $rows)
+    public function __construct(PDO $dbh, $table, $primary, array $rows, $bulkCount = 100)
     {
         $this->dbh = $dbh;
 
@@ -102,6 +103,8 @@ class Inserter implements ProcessorInterface
             throw new InvalidArgumentException("row with key {$key} has wrong type");
         }
         $this->rows = $rows;
+
+        $this->bulkCount = $bulkCount;
     }
 
     /**

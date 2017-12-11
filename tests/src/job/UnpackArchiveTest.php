@@ -2,7 +2,7 @@
 
 namespace marvin255\fias\tests\job;
 
-class UnpackArchiveTest extends \PHPUnit_Framework_TestCase
+class UnpackArchiveTest extends \marvin255\fias\tests\BaseTestCase
 {
     public function testRun()
     {

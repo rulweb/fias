@@ -2,7 +2,7 @@
 
 namespace marvin255\fias\tests\pipe;
 
-class FlowTest extends \PHPUnit_Framework_TestCase
+class FlowTest extends \marvin255\fias\tests\BaseTestCase
 {
     public function testSet()
     {

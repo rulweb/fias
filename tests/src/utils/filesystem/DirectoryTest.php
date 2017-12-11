@@ -2,7 +2,7 @@
 
 namespace marvin255\fias\tests\utils\filesystem;
 
-class DirectoryTest extends \PHPUnit_Framework_TestCase
+class DirectoryTest extends \marvin255\fias\tests\BaseTestCase
 {
     public function testEmptyPathConstructException()
     {

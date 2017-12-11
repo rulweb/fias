@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<dataset>
+    <table name="inserter">
+        <column>id</column>
+        <column>row_1</column>
+        <column>row_2</column>
+    </table>
+</dataset>

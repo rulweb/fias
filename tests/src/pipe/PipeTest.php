@@ -2,7 +2,7 @@
 
 namespace marvin255\fias\tests\pipe;
 
-class PipeTest extends \PHPUnit_Framework_TestCase
+class PipeTest extends \marvin255\fias\tests\BaseTestCase
 {
     public function testAddJob()
     {

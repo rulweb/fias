@@ -4,7 +4,7 @@ namespace marvin255\fias\tests\utils\filesystem;
 
 use marvin255\fias\utils\filesystem\FilterRegexp;
 
-class FilterRegexpTest extends \PHPUnit_Framework_TestCase
+class FilterRegexpTest extends \marvin255\fias\tests\BaseTestCase
 {
     public function testConstructEmptyExtensionsListException()
     {

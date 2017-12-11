@@ -4,7 +4,7 @@ namespace marvin255\fias\tests\job;
 
 use marvin255\fias\job\ReadAndProcess;
 
-class ReadAndProcessTest extends \PHPUnit_Framework_TestCase
+class ReadAndProcessTest extends \marvin255\fias\tests\BaseTestCase
 {
     public function testConstructWrongFilterException()
     {

@@ -4,7 +4,7 @@ namespace marvin255\fias\tests\utils\xml;
 
 use marvin255\fias\utils\xml\Reader;
 
-class ReaderTest extends \PHPUnit_Framework_TestCase
+class ReaderTest extends \marvin255\fias\tests\BaseTestCase
 {
     public function testIterator()
     {
