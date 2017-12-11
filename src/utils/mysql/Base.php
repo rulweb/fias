@@ -97,14 +97,6 @@ abstract class Base implements ProcessorInterface
     }
 
     /**
-     * @inheritdoc
-     */
-    public function close()
-    {
-        return $this;
-    }
-
-    /**
      * Возвращает поля из набора данных, которые нужно записать в БД.
      *
      * @param array $dataSet

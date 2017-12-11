@@ -98,8 +98,6 @@ class Inserter extends Base
      */
     protected function createPrepared()
     {
-        $return = [];
-
         $table = $this->quoteIdent($this->table);
 
         $select = '';
