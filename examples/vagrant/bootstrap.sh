@@ -12,7 +12,7 @@ sudo apt-get -y upgrade
 sudo apt-get install -y build-essential tcl
 
 # install php 7
-sudo apt-get install -y php7.0 php7.0-curl php7.0-xml php7.0-mcrypt php7.0-zip php7.0-dev php7.0-soap
+sudo apt-get install -y php7.0 php7.0-curl php7.0-xml php7.0-mcrypt php7.0-zip php7.0-dev php7.0-soap php7.0-sqlite3
 
 # install mysql and give password to installer
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password ${PASSWORD}"
