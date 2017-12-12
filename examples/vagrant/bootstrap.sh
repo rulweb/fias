@@ -24,12 +24,8 @@ sudo apt-get install -y php7.0-mysql
 mysql -uroot -p"${PASSWORD}" -e "create database if not exists ${DBNAME} DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_unicode_ci;"
 
 # install php rar extension
-cd ~
-wget -q http://pecl.php.net/get/rar-4.0.0.tgz
-tar -xvf rar-4.0.0.tgz
-cd rar-4.0.0
-phpize
-./configure && make && make install
+sudo pecl -v install rar
+echo "extension=rar.so" >> /etc/php/7.0/cli/php.ini
 
 # install Composer
 curl -s https://getcomposer.org/installer | php
