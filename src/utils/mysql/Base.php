@@ -77,7 +77,7 @@ abstract class Base implements ProcessorInterface
         }
 
         if (empty($rows)) {
-            throw new InvalidArgumentException("primary parameter can't be empty");
+            throw new InvalidArgumentException("rows parameter can't be empty");
         }
         foreach ($rows as $key => $item) {
             if (trim($item) !== '') {
