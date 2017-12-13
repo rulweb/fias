@@ -129,7 +129,7 @@ class FiasJobFactory
                 'NAME' => '@NAME',
                 'SHORTNAME' => '@SHORTNAME',
             ],
-            'file_regexp' => 'AS_OPERSTAT_.*\.XML',
+            'file_regexp' => 'AS_ROOMTYPE_.*\.XML',
         ],
         'AddressObjectType' => [
             'xml_path' => '/AddressObjectTypes/AddressObjectType',
