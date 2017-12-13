@@ -39,6 +39,109 @@ class FiasJobFactory
      * @var array
      */
     protected $entitiesDescription = [
+        'ActualStatus' => [
+            'xml_path' => '/ActualStatuses/ActualStatus',
+            'primary' => 'ACTSTATID',
+            'xml_fields' => [
+                'ACTSTATID' => '@ACTSTATID',
+                'NAME' => '@NAME',
+            ],
+            'file_regexp' => 'AS_ACTSTAT_.*\.XML',
+        ],
+        'CenterStatus' => [
+            'xml_path' => '/CenterStatuses/CenterStatus',
+            'primary' => 'CENTERSTID',
+            'xml_fields' => [
+                'CENTERSTID' => '@CENTERSTID',
+                'NAME' => '@NAME',
+            ],
+            'file_regexp' => 'AS_CENTERST_.*\.XML',
+        ],
+        'CurrentStatus' => [
+            'xml_path' => '/CurrentStatuses/CurrentStatus',
+            'primary' => 'CURENTSTID',
+            'xml_fields' => [
+                'CURENTSTID' => '@CURENTSTID',
+                'NAME' => '@NAME',
+            ],
+            'file_regexp' => 'AS_CURENTST_.*\.XML',
+        ],
+        'EstateStatus' => [
+            'xml_path' => '/EstateStatuses/EstateStatus',
+            'primary' => 'ESTSTATID',
+            'xml_fields' => [
+                'ESTSTATID' => '@ESTSTATID',
+                'NAME' => '@NAME',
+            ],
+            'file_regexp' => 'AS_ESTSTAT_.*\.XML',
+        ],
+        'FlatType' => [
+            'xml_path' => '/FlatTypes/FlatType',
+            'primary' => 'FLTYPEID',
+            'xml_fields' => [
+                'FLTYPEID' => '@FLTYPEID',
+                'NAME' => '@NAME',
+                'SHORTNAME' => '@SHORTNAME',
+            ],
+            'file_regexp' => 'AS_FLATTYPE_.*\.XML',
+        ],
+        'HouseStateStatus' => [
+            'xml_path' => '/HouseStateStatuses/HouseStateStatus',
+            'primary' => 'HOUSESTID',
+            'xml_fields' => [
+                'HOUSESTID' => '@HOUSESTID',
+                'NAME' => '@NAME',
+            ],
+            'file_regexp' => 'AS_HSTSTAT_.*\.XML',
+        ],
+        'IntervalStatus' => [
+            'xml_path' => '/IntervalStatuses/IntervalStatus',
+            'primary' => 'INTVSTATID',
+            'xml_fields' => [
+                'INTVSTATID' => '@INTVSTATID',
+                'NAME' => '@NAME',
+            ],
+            'file_regexp' => 'AS_INTVSTAT_.*\.XML',
+        ],
+        'NormativeDocumentType' => [
+            'xml_path' => '/NormativeDocumentTypes/NormativeDocumentType',
+            'primary' => 'NDTYPEID',
+            'xml_fields' => [
+                'NDTYPEID' => '@NDTYPEID',
+                'NAME' => '@NAME',
+            ],
+            'file_regexp' => 'AS_NDOCTYPE_.*\.XML',
+        ],
+        'OperationStatus' => [
+            'xml_path' => '/OperationStatuses/OperationStatus',
+            'primary' => 'OPERSTATID',
+            'xml_fields' => [
+                'OPERSTATID' => '@OPERSTATID',
+                'NAME' => '@NAME',
+            ],
+            'file_regexp' => 'AS_OPERSTAT_.*\.XML',
+        ],
+        'RoomType' => [
+            'xml_path' => '/RoomTypes/RoomType',
+            'primary' => 'RMTYPEID',
+            'xml_fields' => [
+                'RMTYPEID' => '@RMTYPEID',
+                'NAME' => '@NAME',
+                'SHORTNAME' => '@SHORTNAME',
+            ],
+            'file_regexp' => 'AS_OPERSTAT_.*\.XML',
+        ],
+        'AddressObjectType' => [
+            'xml_path' => '/AddressObjectTypes/AddressObjectType',
+            'primary' => 'KOD_T_ST',
+            'xml_fields' => [
+                'KOD_T_ST' => '@KOD_T_ST',
+                'LEVEL' => '@LEVEL',
+                'SOCRNAME' => '@SOCRNAME',
+                'SCNAME' => '@SCNAME',
+            ],
+            'file_regexp' => 'AS_SOCRBASE_.*\.XML',
+        ],
         'StructureStatus' => [
             'xml_path' => '/StructureStatuses/StructureStatus',
             'primary' => 'STRSTATID',
@@ -47,7 +150,7 @@ class FiasJobFactory
                 'NAME' => '@NAME',
                 'SHORTNAME' => '@SHORTNAME',
             ],
-            'file_regexp' => '.*_STRSTAT_.*\.XML',
+            'file_regexp' => 'AS_STRSTAT_.*\.XML',
         ],
     ];
 
