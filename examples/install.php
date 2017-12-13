@@ -22,9 +22,13 @@ $workDir = new Directory(__DIR__ . '/fias_data');
 $factory = new FiasJobFactory($dbh, $workDir);
 
 $pipe = new Pipe;
-//$pipe->addJob(new GetUrl(new SoapClient($fiasWsdl)));
-//$pipe->addJob(new Download($workDir, new Curl));
-//$pipe->addJob(new UnpackArchive($workDir, new Rar));
+$pipe->addJob(new GetUrl(new SoapClient($fiasWsdl)));
+$pipe->addJob(new Download($workDir, new Curl));
+$pipe->addJob(new UnpackArchive($workDir, new Rar));
+$pipe->addJob($factory->inserter('Object', 'address_objects'));
+$pipe->addJob($factory->inserter('House', 'houses'));
+$pipe->addJob($factory->inserter('NormativeDocument', 'normative_documents'));
+$pipe->addJob($factory->inserter('Room', 'rooms'));
 $pipe->addJob($factory->inserter('Stead', 'steads'));
 $pipe->addJob($factory->inserter('ActualStatus', 'actual_statuses'));
 $pipe->addJob($factory->inserter('CenterStatus', 'center_statuses'));
