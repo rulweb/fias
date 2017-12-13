@@ -87,13 +87,17 @@ class Loader extends Inserter
         $statement = $this->dbh->prepare(
             "SELECT {$select} FROM {$table} WHERE {$where}"
         );
-        $this->setPrepared('select', $statement);
+        if ($statement) {
+            $this->setPrepared('select', $statement);
+        }
 
         //обновление элемента
         $statement = $this->dbh->prepare(
             "UPDATE {$table} SET {$set} WHERE {$where}"
         );
-        $this->setPrepared('update', $statement);
+        if ($statement) {
+            $this->setPrepared('update', $statement);
+        }
 
         return $this;
     }

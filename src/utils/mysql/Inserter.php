@@ -111,13 +111,17 @@ class Inserter extends Base
         $statement = $this->dbh->prepare(
             "INSERT INTO {$table} ({$select}) VALUES ({$values})"
         );
-        $this->setPrepared('insert', $statement);
+        if ($statement) {
+            $this->setPrepared('insert', $statement);
+        }
 
         //создание сразу множества элементов
         $statement = $this->dbh->prepare(
             "INSERT INTO {$table} ({$select}) VALUES (" . implode('), (', array_fill(0, $this->bulkCount, $values)) . ')'
         );
-        $this->setPrepared('bulk_insert', $statement);
+        if ($statement) {
+            $this->setPrepared('bulk_insert', $statement);
+        }
 
         return $this;
     }

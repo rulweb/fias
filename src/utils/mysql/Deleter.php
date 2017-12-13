@@ -106,13 +106,17 @@ class Deleter extends Base
         $statement = $this->dbh->prepare(
             "DELETE FROM {$table} WHERE {$delete}"
         );
-        $this->setPrepared('delete', $statement);
+        if ($statement) {
+            $this->setPrepared('delete', $statement);
+        }
 
         //удаление сразу множества элементов
         $statement = $this->dbh->prepare(
             "DELETE FROM {$table} WHERE (" . implode(') OR (', array_fill(0, $this->deleteCount, $delete)) . ')'
         );
-        $this->setPrepared('bulk_delete', $statement);
+        if ($statement) {
+            $this->setPrepared('bulk_delete', $statement);
+        }
 
         return $this;
     }
