@@ -39,6 +39,30 @@ class FiasJobFactory
      * @var array
      */
     protected $entitiesDescription = [
+        'Stead' => [
+            'xml_path' => '/Steads/Stead',
+            'primary' => 'STEADGUID',
+            'xml_fields' => [
+                'STEADGUID' => '@STEADGUID',
+                'NUMBER' => '@NUMBER',
+                'REGIONCODE' => '@REGIONCODE',
+                'POSTALCODE' => '@POSTALCODE',
+                'IFNSFL' => '@IFNSFL',
+                'IFNSUL' => '@IFNSUL',
+                'OKATO' => '@OKATO',
+                'UPDATEDATE' => '@UPDATEDATE',
+                'PARENTGUID' => '@PARENTGUID',
+                'STEADID' => '@STEADID',
+                'OPERSTATUS' => '@OPERSTATUS',
+                'STARTDATE' => '@STARTDATE',
+                'ENDDATE' => '@ENDDATE',
+                'OKTMO' => '@OKTMO',
+                'LIVESTATUS' => '@LIVESTATUS',
+                'DIVTYPE' => '@DIVTYPE',
+                'NORMDOC' => '@NORMDOC',
+            ],
+            'file_regexp' => 'AS_STEAD_.*\.XML',
+        ],
         'ActualStatus' => [
             'xml_path' => '/ActualStatuses/ActualStatus',
             'primary' => 'ACTSTATID',

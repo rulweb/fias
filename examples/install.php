@@ -25,6 +25,7 @@ $pipe = new Pipe;
 //$pipe->addJob(new GetUrl(new SoapClient($fiasWsdl)));
 //$pipe->addJob(new Download($workDir, new Curl));
 //$pipe->addJob(new UnpackArchive($workDir, new Rar));
+$pipe->addJob($factory->inserter('Stead', 'steads'));
 $pipe->addJob($factory->inserter('ActualStatus', 'actual_statuses'));
 $pipe->addJob($factory->inserter('CenterStatus', 'center_statuses'));
 $pipe->addJob($factory->inserter('CurrentStatus', 'current_statuses'));
