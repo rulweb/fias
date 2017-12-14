@@ -38,7 +38,6 @@ $dbh->exec('CREATE TABLE address_objects
         TERRIFNSUL varchar(36) not null,
         OKATO varchar(36) not null,
         OKTMO varchar(36) not null,
-        OKTMO varchar(36) not null,
         POSTALCODE varchar(36) not null,
         STARTDATE date,
         ENDDATE date,
