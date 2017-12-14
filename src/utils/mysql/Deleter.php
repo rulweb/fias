@@ -2,6 +2,7 @@
 
 namespace marvin255\fias\utils\mysql;
 
+use marvin255\fias\processor\Exception;
 use PDO;
 
 /**
@@ -53,12 +54,18 @@ class Deleter extends Base
      *
      * Перед закрытием нужно проверить очередь общего запроса удаления и удалить
      * то, что осталось.
+     *
+     * @throws \marvin255\fias\processor\Exception
      */
     public function close()
     {
         if ($this->deleteBuffer) {
             foreach ($this->deleteBuffer as $item) {
-                $this->getPrepared('delete')->execute($this->getWhereRows($item));
+                $statement = $this->getPrepared('delete');
+                if (!$statement->execute($this->getWhereRows($item))) {
+                    $error = $statement->errorInfo();
+                    throw new Exception("Delete operation failed: {$error[2]}");
+                }
             }
             $this->deleteBuffer = [];
         }
@@ -83,7 +90,11 @@ class Deleter extends Base
             foreach ($this->deleteBuffer as $deleteItem) {
                 $delete = array_merge($delete, $this->getWhereRows($deleteItem));
             }
-            $this->getPrepared('bulk_delete')->execute($delete);
+            $statement = $this->getPrepared('bulk_delete');
+            if (!$statement->execute($delete)) {
+                $error = $statement->errorInfo();
+                throw new Exception("Bulk delete operation failed: {$error[2]}");
+            }
             $this->deleteBuffer = [];
         }
     }
