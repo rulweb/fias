@@ -2,6 +2,7 @@
 
 namespace marvin255\fias\utils\mysql;
 
+use marvin255\fias\processor\Exception;
 use PDO;
 
 /**
@@ -38,12 +39,17 @@ class Loader extends Inserter
      * @param array $dataSet
      *
      * @return array|bool
+     *
+     * @throws \marvin255\fias\processor\Exception
      */
     protected function find(array $dataSet)
     {
         $where = $this->getWhereRows($dataSet);
         $sth = $this->getPrepared('select');
-        $sth->execute($where);
+        if (!$sth->execute($where)) {
+            $error = $sth->errorInfo();
+            throw new Exception("Select operation failed: {$error[2]}");
+        }
         $res = $sth->fetch(PDO::FETCH_ASSOC);
 
         return $res ?: false;
@@ -53,13 +59,19 @@ class Loader extends Inserter
      * Обновляет указанный в наборе данных элемент.
      *
      * @param array $dataSet
+     *
+     * @throws \marvin255\fias\processor\Exception
      */
     protected function update(array $dataSet)
     {
         $where = $this->getWhereRows($dataSet);
         $set = $this->getSetRows($dataSet);
 
-        $this->getPrepared('update')->execute(array_merge($set, $where));
+        $sth = $this->getPrepared('update');
+        if (!$sth->execute(array_merge($set, $where))) {
+            $error = $sth->errorInfo();
+            throw new Exception("Select operation failed: {$error[2]}");
+        }
     }
 
     /**
