@@ -2,6 +2,7 @@
 
 namespace marvin255\fias\utils\mysql;
 
+use marvin255\fias\processor\Exception;
 use PDO;
 
 /**
@@ -56,12 +57,18 @@ class Inserter extends Base
      *
      * Перед закрытием нужно проверить очередь bulk insert и записать то, что
      * осталось.
+     *
+     * @throws \marvin255\fias\processor\Exception
      */
     public function close()
     {
         if ($this->bulkBuffer) {
             foreach ($this->bulkBuffer as $item) {
-                $this->getPrepared('insert')->execute($this->getSetRows($item));
+                $statement = $this->getPrepared('insert');
+                if (!$statement->execute($this->getSetRows($item))) {
+                    $error = $statement->errorInfo();
+                    throw new Exception("Insert operation failed: {$error[2]}");
+                }
             }
             $this->bulkBuffer = [];
         }
@@ -76,6 +83,8 @@ class Inserter extends Base
      * указанной длины, записываем данные в БД одним запросом всю очередь.
      *
      * @param array $dataSet
+     *
+     * @throws \marvin255\fias\processor\Exception
      */
     protected function insert(array $dataSet)
     {
@@ -86,7 +95,11 @@ class Inserter extends Base
             foreach ($this->bulkBuffer as $bulkItem) {
                 $insert = array_merge($insert, $this->getSetRows($bulkItem));
             }
-            $this->getPrepared('bulk_insert')->execute($insert);
+            $statement = $this->getPrepared('bulk_insert');
+            if (!$statement->execute($insert)) {
+                $error = $statement->errorInfo();
+                throw new Exception("Insert operation failed: {$error[2]}");
+            }
             $this->bulkBuffer = [];
         }
     }
