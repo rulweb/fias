@@ -11,9 +11,9 @@ use marvin255\fias\service\database\DatabaseInterface;
 use RuntimeException;
 
 /**
- * Задача, которая обновляет данные в таблице согласно файлу.
+ * Задача, которая удаляет данные из таблицы согласно файлу.
  */
-class UpdateData implements TaskInterface
+class DeleteData implements TaskInterface
 {
     /**
      * @var string
@@ -49,7 +49,7 @@ class UpdateData implements TaskInterface
     protected $database;
 
     /**
-     * @param string $tableName     Таблица, в которую будут загружены данные
+     * @param string $tableName     Таблица, из которой будут удаляться данные
      * @param string $primaryName   Название поля с первичным ключем, по которому будт произведен поиск
      * @param string $filePattern   Шаблон имени файла для поиска файла в папке
      * @param string $xmlPathToNode Xpath для xml файла, по которому будут лежать целевые данные
@@ -77,7 +77,7 @@ class UpdateData implements TaskInterface
                 $this->xmlPathToNode,
                 $this->xmlSelect
             );
-            $this->updateData();
+            $this->deleteData();
             $this->reader->close();
         }
 
@@ -91,7 +91,7 @@ class UpdateData implements TaskInterface
      *
      * @return self
      */
-    public function setWorkDirectory(DirectoryInterface $workDirectory): UpdateData
+    public function setWorkDirectory(DirectoryInterface $workDirectory): DeleteData
     {
         $this->workDirectory = $workDirectory;
 
@@ -105,7 +105,7 @@ class UpdateData implements TaskInterface
      *
      * @return self
      */
-    public function setXmlReader(ReaderInterface $reader): UpdateData
+    public function setXmlReader(ReaderInterface $reader): DeleteData
     {
         $this->reader = $reader;
 
@@ -119,7 +119,7 @@ class UpdateData implements TaskInterface
      *
      * @return self
      */
-    public function setDatabase(DatabaseInterface $database): UpdateData
+    public function setDatabase(DatabaseInterface $database): DeleteData
     {
         $this->database = $database;
 
@@ -131,15 +131,15 @@ class UpdateData implements TaskInterface
      */
     public function getDescription(): string
     {
-        return "Update data from {$this->filePattern} file in {$this->tableName} table";
+        return "Delete {$this->filePattern} file's data from {$this->tableName} table";
     }
 
     /**
-     * Загружает данные в базу данных.
+     * Удаляет данные из базы.
      *
      * @throws \RuntimeException
      */
-    protected function updateData()
+    protected function deleteData()
     {
         foreach ($this->reader as $item) {
             if (!isset($item[$this->primaryName])) {
@@ -148,21 +148,11 @@ class UpdateData implements TaskInterface
                     . json_encode($item, JSON_UNESCAPED_UNICODE)
                 );
             }
-            $searchResult = $this->database->fetchItemByFieldValue(
+            $this->database->deleteItemByFieldValue(
                 $this->tableName,
                 $this->primaryName,
                 $item[$this->primaryName]
             );
-            if (empty($searchResult)) {
-                $this->database->insertItem($this->tableName, $item);
-            } else {
-                $this->database->updateItemByFieldValue(
-                    $this->tableName,
-                    $this->primaryName,
-                    $item[$this->primaryName],
-                    $item
-                );
-            }
         }
     }
 }

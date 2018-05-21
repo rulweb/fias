@@ -4,6 +4,7 @@ namespace marvin255\fias;
 
 use marvin255\fias\task\InsertData;
 use marvin255\fias\task\UpdateData;
+use marvin255\fias\task\DeleteData;
 use InvalidArgumentException;
 
 /**
@@ -63,6 +64,7 @@ class TaskFactory
                 'DIVTYPE' => '@DIVTYPE',
             ],
             'insertFilePattern' => 'AS_ADDROBJ_*.XML',
+            'deleteFilePattern' => 'AS_DEL_ADDROBJ_*.XML',
         ],
         'House' => [
             'xmlPathToNode' => '/Houses/House',
@@ -87,6 +89,7 @@ class TaskFactory
                 'DIVTYPE' => '@DIVTYPE',
             ],
             'insertFilePattern' => 'AS_HOUSE_*.XML',
+            'deleteFilePattern' => 'AS_DEL_HOUSE_*.XML',
             'bulkSize' => 100,
         ],
         'NormativeDocument' => [
@@ -100,6 +103,7 @@ class TaskFactory
                 'DOCTYPE' => '@DOCTYPE',
             ],
             'insertFilePattern' => 'AS_NORMDOC_*.XML',
+            'deleteFilePattern' => 'AS_DEL_NORMDOC_*.XML',
         ],
         'Room' => [
             'xmlPathToNode' => '/Rooms/Room',
@@ -120,6 +124,7 @@ class TaskFactory
                 'NORMDOC' => '@NORMDOC',
             ],
             'insertFilePattern' => 'AS_ROOM_*.XML',
+            'deleteFilePattern' => 'AS_DEL_ROOM_*.XML',
             'bulkSize' => 100,
         ],
         'Stead' => [
@@ -145,6 +150,7 @@ class TaskFactory
                 'NORMDOC' => '@NORMDOC',
             ],
             'insertFilePattern' => 'AS_STEAD_*.XML',
+            'deleteFilePattern' => 'AS_DEL_STEAD_*.XML',
         ],
         'ActualStatus' => [
             'xmlPathToNode' => '/ActualStatuses/ActualStatus',
@@ -154,6 +160,7 @@ class TaskFactory
                 'NAME' => '@NAME',
             ],
             'insertFilePattern' => 'AS_ACTSTAT_*.XML',
+            'deleteFilePattern' => 'AS_DEL_ACTSTAT_*.XML',
         ],
         'CenterStatus' => [
             'xmlPathToNode' => '/CenterStatuses/CenterStatus',
@@ -163,6 +170,7 @@ class TaskFactory
                 'NAME' => '@NAME',
             ],
             'insertFilePattern' => 'AS_CENTERST_*.XML',
+            'deleteFilePattern' => 'AS_DEL_CENTERST_*.XML',
         ],
         'CurrentStatus' => [
             'xmlPathToNode' => '/CurrentStatuses/CurrentStatus',
@@ -172,6 +180,7 @@ class TaskFactory
                 'NAME' => '@NAME',
             ],
             'insertFilePattern' => 'AS_CURENTST_*.XML',
+            'deleteFilePattern' => 'AS_DEL_CURENTST_*.XML',
         ],
         'EstateStatus' => [
             'xmlPathToNode' => '/EstateStatuses/EstateStatus',
@@ -181,6 +190,7 @@ class TaskFactory
                 'NAME' => '@NAME',
             ],
             'insertFilePattern' => 'AS_ESTSTAT_*.XML',
+            'deleteFilePattern' => 'AS_DEL_ESTSTAT_*.XML',
         ],
         'FlatType' => [
             'xmlPathToNode' => '/FlatTypes/FlatType',
@@ -191,6 +201,7 @@ class TaskFactory
                 'SHORTNAME' => '@SHORTNAME',
             ],
             'insertFilePattern' => 'AS_FLATTYPE_*.XML',
+            'deleteFilePattern' => 'AS_DEL_FLATTYPE_*.XML',
         ],
         'HouseStateStatus' => [
             'xmlPathToNode' => '/HouseStateStatuses/HouseStateStatus',
@@ -200,6 +211,7 @@ class TaskFactory
                 'NAME' => '@NAME',
             ],
             'insertFilePattern' => 'AS_HSTSTAT_*.XML',
+            'deleteFilePattern' => 'AS_DEL_HSTSTAT_*.XML',
         ],
         'IntervalStatus' => [
             'xmlPathToNode' => '/IntervalStatuses/IntervalStatus',
@@ -209,6 +221,7 @@ class TaskFactory
                 'NAME' => '@NAME',
             ],
             'insertFilePattern' => 'AS_INTVSTAT_*.XML',
+            'deleteFilePattern' => 'AS_DEL_INTVSTAT_*.XML',
         ],
         'NormativeDocumentType' => [
             'xmlPathToNode' => '/NormativeDocumentTypes/NormativeDocumentType',
@@ -218,6 +231,7 @@ class TaskFactory
                 'NAME' => '@NAME',
             ],
             'insertFilePattern' => 'AS_NDOCTYPE_*.XML',
+            'deleteFilePattern' => 'AS_DEL_NDOCTYPE_*.XML',
         ],
         'OperationStatus' => [
             'xmlPathToNode' => '/OperationStatuses/OperationStatus',
@@ -227,6 +241,7 @@ class TaskFactory
                 'NAME' => '@NAME',
             ],
             'insertFilePattern' => 'AS_OPERSTAT_*.XML',
+            'deleteFilePattern' => 'AS_DEL_OPERSTAT_*.XML',
         ],
         'RoomType' => [
             'xmlPathToNode' => '/RoomTypes/RoomType',
@@ -237,6 +252,7 @@ class TaskFactory
                 'SHORTNAME' => '@SHORTNAME',
             ],
             'insertFilePattern' => 'AS_ROOMTYPE_*.XML',
+            'deleteFilePattern' => 'AS_DEL_ROOMTYPE_*.XML',
         ],
         'AddressObjectType' => [
             'xmlPathToNode' => '/AddressObjectTypes/AddressObjectType',
@@ -248,6 +264,7 @@ class TaskFactory
                 'SCNAME' => '@SCNAME',
             ],
             'insertFilePattern' => 'AS_SOCRBASE_*.XML',
+            'deleteFilePattern' => 'AS_DEL_SOCRBASE_*.XML',
         ],
         'StructureStatus' => [
             'xmlPathToNode' => '/StructureStatuses/StructureStatus',
@@ -258,6 +275,7 @@ class TaskFactory
                 'SHORTNAME' => '@SHORTNAME',
             ],
             'insertFilePattern' => 'AS_STRSTAT_*.XML',
+            'deleteFilePattern' => 'AS_DEL_STRSTAT_*.XML',
         ],
     ];
 
@@ -283,7 +301,7 @@ class TaskFactory
     }
 
     /**
-     * Создает объект для чтения даных из файла и создания новых записей.
+     * Создает объект для чтения даных из файла и обновления существующих записей.
      *
      * @param string $entity    Название сущности фиас, длякоторой создается объект
      * @param string $tableName Название таблицы, в которую будет произведена запись
@@ -302,6 +320,28 @@ class TaskFactory
         $primary = $primary ?: $entityDescription['primary'];
 
         return new UpdateData($tableName, $primary, $filePattern, $pathToNode, $select);
+    }
+
+    /**
+     * Создает объект для чтения даных из файла и удаления существующих записей.
+     *
+     * @param string $entity    Название сущности фиас, длякоторой создается объект
+     * @param string $tableName Название таблицы, в которую будет произведена запись
+     * @param string $primary   Название первичного ключа для таблицы
+     * @param array  $fields    Массив с соответствием полей, вида "поле в таблице => поле в файле"
+     *
+     * @return \marvin255\fias\TaskInterface
+     */
+    public function deleter(string $entity, string $tableName, string $primary = null, array $fields = null): TaskInterface
+    {
+        $entityDescription = $this->getEntityDescription($entity);
+
+        $filePattern = $entityDescription['deleteFilePattern'];
+        $pathToNode = $entityDescription['xmlPathToNode'];
+        $select = $fields ?: $entityDescription['xmlSelect'];
+        $primary = $primary ?: $entityDescription['primary'];
+
+        return new DeleteData($tableName, $primary, $filePattern, $pathToNode, $select);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace marvin255\fias\tests;
 use marvin255\fias\TaskFactory;
 use marvin255\fias\task\InsertData;
 use marvin255\fias\task\UpdateData;
+use marvin255\fias\task\DeleteData;
 use InvalidArgumentException;
 
 class TaskFactoryTest extends BaseTestCase
@@ -25,6 +26,15 @@ class TaskFactoryTest extends BaseTestCase
         $updater = $factory->updater('StructureStatus', 'structure_status');
 
         $this->assertInstanceOf(UpdateData::class, $updater);
+    }
+
+    public function testDeleter()
+    {
+        $factory = new TaskFactory;
+
+        $deleter = $factory->deleter('StructureStatus', 'structure_status');
+
+        $this->assertInstanceOf(DeleteData::class, $deleter);
     }
 
     public function testInvalidEntityException()
