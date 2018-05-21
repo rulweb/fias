@@ -114,6 +114,19 @@ class Mysql implements DatabaseInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function deleteItemByFieldValue(string $tableName, string $fieldName, $value): DatabaseInterface
+    {
+        $sql = 'DELETE  FROM ' . $this->quoteIdent($tableName)
+            . ' WHERE ' . $this->quoteIdent($fieldName) . ' = ?';
+
+        $res = $this->fetch($sql, [$value]);
+
+        return $this;
+    }
+
+    /**
      * Ищет данные в базе и возвращает результат в виде ассоциативного массива.
      *
      * @param string $sql

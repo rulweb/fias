@@ -99,6 +99,22 @@ class MysqlTest extends DbTestCase
         $this->assertTablesEqual($expectedTable, $queryTable);
     }
 
+    public function testDeleteItemByFieldValue()
+    {
+        $dbPdo = new Mysql($this->getPdo());
+
+        $dbPdo->deleteItemByFieldValue('deleteItemByFieldValueTable', 'id', 2);
+
+        $queryTable = $this->getConnection()->createQueryTable(
+            'deleteItemByFieldValueTable',
+            'SELECT * FROM deleteItemByFieldValueTable'
+        );
+        $expectedTable = $this->createXmlDataSet(__DIR__ . '/_fixture/deleteItemByFieldValueTable_expected.xml')
+            ->getTable('deleteItemByFieldValueTable');
+
+        $this->assertTablesEqual($expectedTable, $queryTable);
+    }
+
     public function testFetchPdoException()
     {
         $dbPdo = new Mysql($this->getPdo());
@@ -169,6 +185,9 @@ class MysqlTest extends DbTestCase
         $compositeDs->addDataSet(
             $this->createXmlDataSet(__DIR__ . '/_fixture/insertItemTable.xml')
         );
+        $compositeDs->addDataSet(
+            $this->createXmlDataSet(__DIR__ . '/_fixture/deleteItemByFieldValueTable.xml')
+        );
 
         return $compositeDs;
     }
@@ -212,6 +231,12 @@ class MysqlTest extends DbTestCase
             PRIMARY KEY(id)
         )');
 
+        $pdo->exec('CREATE TABLE deleteItemByFieldValueTable (
+            id int(11) not null,
+            row1 varchar(30),
+            PRIMARY KEY(id)
+        )');
+
         return parent::setUp();
     }
 
@@ -225,6 +250,7 @@ class MysqlTest extends DbTestCase
         $this->getPdo()->exec('DROP TABLE IF EXISTS fetchItemByFieldValueTable');
         $this->getPdo()->exec('DROP TABLE IF EXISTS updateItemByFieldValueTable');
         $this->getPdo()->exec('DROP TABLE IF EXISTS insertItemTable');
+        $this->getPdo()->exec('DROP TABLE IF EXISTS deleteItemByFieldValueTable');
 
         return parent::tearDown();
     }

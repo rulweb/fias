@@ -61,4 +61,15 @@ interface DatabaseInterface
      * @return self
      */
     public function insertItem(string $tableName, array $toInsert): DatabaseInterface;
+
+    /**
+     * Удаляет в таблице запись по указанному полю.
+     *
+     * @param string $tableName
+     * @param string $fieldName
+     * @param mixed  $value
+     *
+     * @return self
+     */
+    public function deleteItemByFieldValue(string $tableName, string $fieldName, $value): DatabaseInterface;
 }
