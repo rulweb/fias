@@ -77,7 +77,7 @@ class UpdateData implements TaskInterface
                 $this->xmlPathToNode,
                 $this->xmlSelect
             );
-            $this->updateData();
+            $this->proceedData();
             $this->reader->close();
         }
 
@@ -139,7 +139,7 @@ class UpdateData implements TaskInterface
      *
      * @throws \RuntimeException
      */
-    protected function updateData()
+    protected function proceedData()
     {
         foreach ($this->reader as $item) {
             if (!isset($item[$this->primaryName])) {
