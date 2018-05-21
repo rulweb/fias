@@ -4,6 +4,6 @@ composer.lock
 
 tests/coverage
 
-examples/fias_data
-examples/vagrant/.vagrant
-examples/vagrant/*.log
+staging/.vagrant
+staging/*.log
+staging/workdir

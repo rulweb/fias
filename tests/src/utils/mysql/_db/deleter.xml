@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-<dataset>
-    <deleter id="1" row1="row_1_1" row2="row_2_1" />
-    <deleter id="2" row1="row_1_2" row2="row_2_2" />
-    <deleter id="3" row1="row_1_3" row2="row_2_3" />
-    <deleter id="4" row1="row_1_4" row2="row_2_4" />
-</dataset>

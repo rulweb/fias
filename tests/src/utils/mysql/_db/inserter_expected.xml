@@ -1,8 +1,0 @@
-<?xml version="1.0" ?>
-<dataset>
-    <inserter id="1" row1="row_1_1" row2="row_2_1" />
-    <inserter id="2" row1="row_1_2" row2="row_2_2" />
-    <inserter id="3" row1="row_1_3" row2="row_2_3" />
-    <inserter id="4" row1="row_1_4" row2="row_2_4" />
-    <inserter id="5" row1="row_1_5" row2="row_2_5" />
-</dataset>

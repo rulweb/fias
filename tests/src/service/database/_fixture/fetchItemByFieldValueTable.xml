@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<dataset>
+    <table name="fetchItemByFieldValueTable">
+        <column>id</column>
+        <column>row1</column>
+        <row>
+            <value>1</value>
+            <value>row 1 1</value>
+        </row>
+        <row>
+            <value>2</value>
+            <value>row 2 1</value>
+        </row>
+        <row>
+            <value>3</value>
+            <value>row 3 1</value>
+        </row>
+    </table>
+</dataset>

@@ -14,9 +14,10 @@
     <filter>
         <whitelist>
             <directory>src</directory>
-            <exclude>
-                <file>src/Autoloader.php</file>
-            </exclude>
         </whitelist>
     </filter>
+
+    <listeners>
+        <listener class="\Mockery\Adapter\Phpunit\TestListener"></listener>
+    </listeners>
 </phpunit>

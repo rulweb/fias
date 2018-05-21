@@ -1,6 +1,0 @@
-<?xml version="1.0" ?>
-<dataset>
-    <loader id="1" row1="row_1_1" row2="row_2_1" />
-    <loader id="2" row1="row_1_2" row2="row_2_2" />
-    <loader id="3" row1="row_1_3" row2="row_2_3" />
-</dataset>

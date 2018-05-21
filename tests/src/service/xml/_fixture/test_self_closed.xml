@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <realItem test="real item 1 test attr" fake="real item 1 fake attr" />
+    <realItem fake="real item 2 fake attr" test="real item 2 test attr" />
+    <realItem test="real item 3 test attr" fake="real item 3 fake attr" />
+    <fakeItem test="fake item 3 test attr" fake="fake item 3 fake attr" />
+</root>

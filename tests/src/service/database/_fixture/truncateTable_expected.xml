@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<dataset>
+    <table name="truncateTable">
+        <column>id</column>
+        <column>row1</column>
+        <column>row2</column>
+    </table>
+</dataset>
