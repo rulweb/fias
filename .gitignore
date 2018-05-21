@@ -7,3 +7,6 @@ tests/coverage
 staging/.vagrant
 staging/*.log
 staging/workdir
+
+
+.~lock.*
