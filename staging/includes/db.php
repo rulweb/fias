@@ -141,15 +141,15 @@ $tables = [
             STATSTATUS varchar(255) not null,
             IFNSFL varchar(255) not null,
             IFNSUL varchar(255) not null,
-            OKATO varchar(255) not null,
+            OKATO int(15) not null,
             OKTMO varchar(255) not null,
-            POSTALCODE int(15) not null,
+            POSTALCODE varchar(255) not null,
             STARTDATE varchar(255) not null,
             ENDDATE varchar(255) not null,
             UPDATEDATE varchar(255) not null,
             COUNTER varchar(255) not null,
             DIVTYPE varchar(255) not null
-        ) CHARACTER SET utf8 COLLATE utf8_general_ci PARTITION BY LINEAR HASH (POSTALCODE) PARTITIONS 4;
+        ) CHARACTER SET utf8 COLLATE utf8_general_ci PARTITION BY LINEAR HASH (OKATO) PARTITIONS 4;
     ',
     'address_objects' => 'CREATE TABLE address_objects
         (
@@ -195,12 +195,12 @@ $tables = [
 foreach ($tables as $tableName => $createSql) {
     $res = $dbh->exec("DROP TABLE IF EXISTS `{$tableName}`");
     if ($res === false) {
-        $error = $statement->errorInfo();
+        $error = $dbh->errorInfo();
         throw new Exception($error[2]);
     }
     $res = $dbh->exec($createSql);
     if ($res === false) {
-        $error = $statement->errorInfo();
+        $error = $dbh->errorInfo();
         throw new Exception($error[2]);
     }
 }
