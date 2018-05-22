@@ -92,6 +92,7 @@ class Pipe implements PipeInterface
 
     /**
      * @inheritdoc
+     * @throws Throwable
      */
     public function run(): bool
     {
@@ -218,6 +219,8 @@ class Pipe implements PipeInterface
      * @param \marvin255\fias\TaskInterface $task
      *
      * @return \marvin255\fias\TaskInterface
+     *
+     * @throws \ReflectionException
      */
     protected function resolveTaskServices(TaskInterface $task): TaskInterface
     {

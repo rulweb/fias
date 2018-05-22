@@ -24,27 +24,46 @@ class Mysql implements DatabaseInterface
 
     /**
      * Задает объект PDO для соединения с базой данных.
-     *
-     * @param \PDO $pdoConnection
+     * @param array $db_config
      */
-    public function __construct(PDO $pdo)
+    public function __construct($db_config)
     {
-        $this->pdoConnection = $pdo;
+        $this->pdoConnection = new PDO($db_config['dsn'], $db_config['username'], $db_config['password']);
     }
 
     /**
-     * @inheritdoc
+     * @param string $tableName
+     * @return DatabaseInterface
+     * @throws Exception
      */
     public function truncateTable(string $tableName): DatabaseInterface
     {
         $sql = 'DELETE FROM ' . $this->quoteIdent($tableName);
+
         $this->exec($sql);
 
         return $this;
     }
 
     /**
-     * @inheritdoc
+     * @param string $tableName
+     * @return DatabaseInterface
+     * @throws Exception
+     */
+    public function dropTable(string $tableName): DatabaseInterface
+    {
+        $sql = 'DROP TABLE IF EXISTS ' . $this->quoteIdent($tableName);
+
+        $this->exec($sql);
+
+        return $this;
+    }
+
+    /**
+     * @param string $tableName
+     * @param array $data
+     * @return DatabaseInterface
+     * @throws Exception
      */
     public function bulkInsert(string $tableName, array $data): DatabaseInterface
     {
@@ -65,7 +84,11 @@ class Mysql implements DatabaseInterface
     }
 
     /**
-     * @inheritdoc
+     * @param string $tableName
+     * @param string $fieldName
+     * @param mixed $value
+     * @return array
+     * @throws Exception
      */
     public function fetchItemByFieldValue(string $tableName, string $fieldName, $value): array
     {
@@ -79,7 +102,12 @@ class Mysql implements DatabaseInterface
     }
 
     /**
-     * @inheritdoc
+     * @param string $tableName
+     * @param string $fieldName
+     * @param mixed $value
+     * @param array $toUpdate
+     * @return DatabaseInterface
+     * @throws Exception
      */
     public function updateItemByFieldValue(string $tableName, string $fieldName, $value, array $toUpdate): DatabaseInterface
     {
@@ -97,7 +125,10 @@ class Mysql implements DatabaseInterface
     }
 
     /**
-     * @inheritdoc
+     * @param string $tableName
+     * @param array $toInsert
+     * @return DatabaseInterface
+     * @throws Exception
      */
     public function insertItem(string $tableName, array $toInsert): DatabaseInterface
     {
@@ -114,14 +145,18 @@ class Mysql implements DatabaseInterface
     }
 
     /**
-     * @inheritdoc
+     * @param string $tableName
+     * @param string $fieldName
+     * @param mixed $value
+     * @return DatabaseInterface
+     * @throws Exception
      */
     public function deleteItemByFieldValue(string $tableName, string $fieldName, $value): DatabaseInterface
     {
         $sql = 'DELETE  FROM ' . $this->quoteIdent($tableName)
             . ' WHERE ' . $this->quoteIdent($fieldName) . ' = ?';
 
-        $res = $this->fetch($sql, [$value]);
+        $this->fetch($sql, [$value]);
 
         return $this;
     }
@@ -163,7 +198,7 @@ class Mysql implements DatabaseInterface
      *
      * @throws \marvin255\fias\service\database\Exception
      */
-    protected function exec(string $sql, array $data = [])
+    public function exec(string $sql, array $data = [])
     {
         try {
             $statement = $this->getStatement($sql);

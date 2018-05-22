@@ -1,19 +1,28 @@
 <?php
 
-/**
- * Подключение базы данных и создание структуры таблиц.
- */
-$dbh = new PDO('mysql:dbname=fias;host=localhost;charset=UTF8', 'root', 'password');
+namespace marvin255\fias\task;
 
-$tables = [
-    'structure_statuses' => 'CREATE TABLE structure_statuses
+use Exception;
+use marvin255\fias\service\database\DatabaseInterface;
+use marvin255\fias\service\database\Mysql;
+use marvin255\fias\TaskInterface;
+
+class DropAndCreateTables implements TaskInterface
+{
+    /**
+     * @var \marvin255\fias\service\database\DatabaseInterface|Mysql
+     */
+    protected $database;
+
+    private $tables = [
+        'structure_statuses' => 'CREATE TABLE structure_statuses
         (
             STRSTATID int(11) unsigned not null,
             NAME varchar(255) not null,
             SHORTNAME varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'address_object_types' => 'CREATE TABLE address_object_types
+        'address_object_types' => 'CREATE TABLE address_object_types
         (
             KOD_T_ST int(11) unsigned not null,
             LEVEL int(5) unsigned not null,
@@ -21,69 +30,69 @@ $tables = [
             SCNAME varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'room_types' => 'CREATE TABLE room_types
+        'room_types' => 'CREATE TABLE room_types
         (
             RMTYPEID int(11) unsigned not null,
             NAME varchar(255) not null,
             SHORTNAME varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'operation_statuses' => 'CREATE TABLE operation_statuses
+        'operation_statuses' => 'CREATE TABLE operation_statuses
         (
             OPERSTATID int(11) unsigned not null,
             NAME varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'normative_document_types' => 'CREATE TABLE normative_document_types
+        'normative_document_types' => 'CREATE TABLE normative_document_types
         (
             NDTYPEID int(11) unsigned not null,
             NAME varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'interval_statuses' => 'CREATE TABLE interval_statuses
+        'interval_statuses' => 'CREATE TABLE interval_statuses
         (
             INTVSTATID int(11) unsigned not null,
             NAME varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'house_state_statuses' => 'CREATE TABLE house_state_statuses
+        'house_state_statuses' => 'CREATE TABLE house_state_statuses
         (
             HOUSESTID int(11) unsigned not null,
             NAME varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'flat_types' => 'CREATE TABLE flat_types
+        'flat_types' => 'CREATE TABLE flat_types
         (
             FLTYPEID int(11) unsigned not null,
             NAME varchar(255) not null,
             SHORTNAME varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'estate_statuses' => 'CREATE TABLE estate_statuses
+        'estate_statuses' => 'CREATE TABLE estate_statuses
         (
             ESTSTATID int(11) unsigned not null,
             NAME varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'current_statuses' => 'CREATE TABLE current_statuses
+        'current_statuses' => 'CREATE TABLE current_statuses
         (
             CURENTSTID int(11) unsigned not null,
             NAME varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'center_statuses' => 'CREATE TABLE center_statuses
+        'center_statuses' => 'CREATE TABLE center_statuses
         (
             CENTERSTID int(11) unsigned not null,
             NAME varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'actual_statuses' => 'CREATE TABLE actual_statuses
+        'actual_statuses' => 'CREATE TABLE actual_statuses
         (
             ACTSTATID int(11) unsigned not null,
             NAME varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'steads' => 'CREATE TABLE steads
+        'steads' => 'CREATE TABLE steads
         (
             STEADGUID varchar(255) not null,
             `NUMBER` varchar(255) not null,
@@ -104,7 +113,7 @@ $tables = [
             NORMDOC varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'rooms' => 'CREATE TABLE rooms
+        'rooms' => 'CREATE TABLE rooms
         (
             ROOMID varchar(255) not null,
             ROOMGUID varchar(255) not null,
@@ -121,7 +130,7 @@ $tables = [
             NORMDOC varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'normative_documents' => 'CREATE TABLE normative_documents
+        'normative_documents' => 'CREATE TABLE normative_documents
         (
             NORMDOCID varchar(255) not null,
             DOCNAME text not null,
@@ -130,7 +139,7 @@ $tables = [
             DOCTYPE varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-    'houses' => 'CREATE TABLE houses
+        'houses' => 'CREATE TABLE houses
         (
             HOUSEID varchar(255) not null,
             HOUSEGUID varchar(255) not null,
@@ -151,7 +160,7 @@ $tables = [
             DIVTYPE varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci PARTITION BY LINEAR HASH (OKATO) PARTITIONS 4;
     ',
-    'address_objects' => 'CREATE TABLE address_objects
+        'address_objects' => 'CREATE TABLE address_objects
         (
             AOID varchar(255) not null,
             AOGUID varchar(255) not null,
@@ -190,19 +199,45 @@ $tables = [
             DIVTYPE varchar(255) not null
         ) CHARACTER SET utf8 COLLATE utf8_general_ci;
     ',
-];
+    ];
 
-foreach ($tables as $tableName => $createSql) {
-    $res = $dbh->exec("DROP TABLE IF EXISTS `{$tableName}`");
-    if ($res === false) {
-        $error = $dbh->errorInfo();
-        throw new Exception($error[2]);
+    /**
+     * Запускает данную задачу на исполнение.
+     *
+     * @return bool
+     * @throws Exception
+     */
+    public function run(): bool
+    {
+        foreach ($this->tables as $tableName => $createSql) {
+            $this->database->dropTable($tableName);
+            $this->database->exec($createSql);
+        }
+
+        return true;
     }
-    $res = $dbh->exec($createSql);
-    if ($res === false) {
-        $error = $dbh->errorInfo();
-        throw new Exception($error[2]);
+
+    /**
+     * Сеттер для объекта базы данных.
+     *
+     * @param \marvin255\fias\service\database\DatabaseInterface $database
+     *
+     * @return self
+     */
+    public function setDatabase(DatabaseInterface $database): DropAndCreateTables
+    {
+        $this->database = $database;
+
+        return $this;
+    }
+
+    /**
+     * Возвращает описание задачи.
+     *
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return "Drop and create all tables";
     }
 }
-
-return $dbh;
