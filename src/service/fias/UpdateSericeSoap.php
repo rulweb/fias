@@ -13,6 +13,7 @@ class UpdateSericeSoap implements UpdateServiceInterface
      * @const
      */
     const DEFAULT_FIAS_WSDL = 'http://fias.nalog.ru/WebServices/Public/DownloadService.asmx?WSDL';
+
     /**
      * @var \SoapClient
      */
